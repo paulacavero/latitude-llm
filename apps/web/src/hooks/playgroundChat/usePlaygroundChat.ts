@@ -1,12 +1,15 @@
 import { tokenizeMessages, tokenizeText } from '$/lib/tokenize'
-import { ChainEvent, ChainEventTypes } from '@latitude-data/constants'
+import {
+  ChainEvent,
+  ChainEventTypes,
+  LegacyVercelSDKVersion4Usage as LanguageModelUsage,
+} from '@latitude-data/constants'
 import {
   Message,
   MessageRole,
   ToolCall,
   ToolMessage,
 } from '@latitude-data/constants/legacyCompiler'
-import { LanguageModelUsage } from 'ai'
 import { ParsedEvent } from 'eventsource-parser/stream'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useProviderEventHandler } from './useProviderEventHandler'
@@ -59,7 +62,7 @@ export function usePlaygroundChat({
   const [error, setError] = useState<Error | undefined>()
   const [isLoading, setIsLoading] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
-  const [unrespondedToolCalls, setUnrespondedToolCalls] = useState<ToolCall[]>([]) // prettier-ignore
+  const [unresponedToolCalls, setUnresponedToolCalls] = useState<ToolCall[]>([])
   const [usage, setUsage] = useState<LanguageModelUsage>(EMPTY_USAGE())
   const [usageDelta, setUsageDelta] = useState<LanguageModelUsageDelta>(EMPTY_USAGE()) // prettier-ignore
   const usageDeltaRef = useRef<LanguageModelUsageDelta>(EMPTY_USAGE())
@@ -90,7 +93,7 @@ export function usePlaygroundChat({
         completionTokens: incr.completionTokens,
       })
       setUsageDelta((prev) => {
-        const promptTokens =  Math.max(0, prev.promptTokens + (incr.promptTokens ?? 0)) // prettier-ignore
+        const promptTokens = Math.max(0, prev.promptTokens + (incr.promptTokens ?? 0)) // prettier-ignore
         const completionTokens = Math.max(0, prev.completionTokens + (incr.completionTokens ?? 0)) // prettier-ignore
         return { promptTokens, completionTokens }
       })

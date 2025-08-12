@@ -12,7 +12,15 @@ import type {
   ToolCall,
   UserMessage,
 } from '@latitude-data/constants/legacyCompiler'
-import { FinishReason, LanguageModelUsage, Tool, ToolResultPart } from 'ai'
+import {
+  EvaluationResultableType,
+  LatitudeTool,
+  LatitudeToolInternalName,
+  LegacyVercelSDKVersion4Usage as LanguageModelUsage,
+  LogSources,
+  ChainStepResponse as ConstantsChainStepResponse,
+} from '@latitude-data/constants'
+import { FinishReason, Tool } from 'ai'
 import { z } from 'zod'
 
 import { TelemetryContext } from '@latitude-data/telemetry'
@@ -85,7 +93,7 @@ type BaseResponse = {
   documentLogUuid?: string
   providerLog?: ProviderLog
   // TODO(promptl): move this message type to promptl and call it ToolResultMessage
-  output?: (AssistantMessage | { role: 'tool'; content: ToolResultPart[] })[]
+  output?: ConstantsChainStepResponse<StreamType>['output'] // This is a union of AssistantMessage and ToolResultPart
 }
 
 export type ChainStepTextResponse = BaseResponse & {

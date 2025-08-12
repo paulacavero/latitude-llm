@@ -11,7 +11,8 @@ import {
   Message as LegacyMessage,
   ToolCall,
 } from '@latitude-data/constants/legacyCompiler'
-import { FinishReason, LanguageModelUsage } from 'ai'
+import { FinishReason } from 'ai'
+import { LegacyVercelSDKVersion4Usage as LanguageModelUsage } from '@latitude-data/constants/ai'
 import { omit } from 'lodash-es'
 import {
   IntegrationDto,
@@ -36,6 +37,8 @@ const EMPTY_USAGE = (): LanguageModelUsage => ({
   promptTokens: 0,
   completionTokens: 0,
   totalTokens: 0,
+  reasoningTokens: 0,
+  cachedInputTokens: 0,
 })
 
 export type StreamManagerProps = {
@@ -377,6 +380,10 @@ export abstract class StreamManager {
       completionTokens:
         (this.logUsage?.completionTokens ?? 0) + tokenUsage.completionTokens,
       totalTokens: (this.logUsage?.totalTokens ?? 0) + tokenUsage.totalTokens,
+      reasoningTokens:
+        this.logUsage.reasoningTokens + tokenUsage.reasoningTokens,
+      cachedInputTokens:
+        this.logUsage.cachedInputTokens + tokenUsage.cachedInputTokens,
     }
   }
 
@@ -387,6 +394,10 @@ export abstract class StreamManager {
       completionTokens:
         (this.runUsage?.completionTokens ?? 0) + tokenUsage.completionTokens,
       totalTokens: (this.runUsage?.totalTokens ?? 0) + tokenUsage.totalTokens,
+      reasoningTokens:
+        this.runUsage.reasoningTokens + tokenUsage.reasoningTokens,
+      cachedInputTokens:
+        this.runUsage.cachedInputTokens + tokenUsage.cachedInputTokens,
     }
   }
 
