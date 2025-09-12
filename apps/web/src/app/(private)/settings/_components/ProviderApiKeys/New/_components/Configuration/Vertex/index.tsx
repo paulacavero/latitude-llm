@@ -38,7 +38,7 @@ export function VertexConfiguration() {
         required
         type='text'
         label='Private Key ID'
-        info='The private key ID from the service account JSON file.'
+        info='The private key ID from the service account JSON file. The credentials file can be obtained from the Google Cloud Console: https://console.cloud.google.com/apis/credentials'
         name={buildConfigFieldName({
           fieldNamespace: '[googleCredentials][privateKeyId]',
         })}
@@ -46,7 +46,7 @@ export function VertexConfiguration() {
       <TextArea
         required
         label='Private Key'
-        info='The private key from the service account JSON file.'
+        info='The private key from the service account JSON file. The credentials file can be obtained from the Google Cloud Console: https://console.cloud.google.com/apis/credentials'
         name={buildConfigFieldName({
           fieldNamespace: '[googleCredentials][privateKey]',
         })}
