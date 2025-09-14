@@ -185,6 +185,11 @@ export type WebServerToClientEvents = {
     threadUuid: string
     changes: LatteChange[]
   }) => void
+  documentRunEvent: (args: {
+    event: string
+    data: unknown
+    jobId: string
+  }) => void
 }
 
 export type WebClientToServerEvents = {
@@ -247,5 +252,13 @@ export type WorkersClientToServerEvents = {
   latteProjectChanges: (args: {
     workspaceId: number
     data: { threadUuid: string; changes: LatteChange[] }
+  }) => void
+  documentRunEvent: (args: {
+    workspaceId: number
+    data: {
+      event: string
+      data: unknown
+      jobId: string
+    }
   }) => void
 }

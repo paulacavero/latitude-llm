@@ -14,7 +14,7 @@ export const pubSubProducer = new QueueEventsProducer(queueName, options)
 export const pubSubEvents = new QueueEvents(queueName, options)
 
 // PubSub events
-export type PubSubEvent = 'clientToolResultReceived'
+export type PubSubEvent = 'clientToolResultReceived' | 'cancelJob'
 
 // PubSub handlers
 export interface PubSubHandler {
@@ -23,9 +23,11 @@ export interface PubSubHandler {
     result: unknown
     isError?: string
   }) => void
+  cancelJob: (args: { jobId: string }) => void
 }
 
 // PubSub listeners
 export interface PubSubListener extends QueueEventsListener {
   clientToolResultReceived: PubSubHandler['clientToolResultReceived']
+  cancelJob: PubSubHandler['cancelJob']
 }

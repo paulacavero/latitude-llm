@@ -4,10 +4,11 @@ import { createWorker } from '../utils/createWorker'
 import { WORKER_CONNECTION_CONFIG } from '../utils/connectionConfig'
 
 const jobMappings = {
-  runDocumentJob: jobs.runDocumentJob,
+  runDocumentApiJob: jobs.runDocumentApiJob,
   runDocumentForExperimentJob: jobs.runDocumentForExperimentJob,
-  runLatteJob: jobs.runLatteJob,
+  runDocumentJob: jobs.runDocumentJob,
   runDocumentTriggerEventJob: jobs.runDocumentTriggerEventJob,
+  runLatteJob: jobs.runLatteJob,
 }
 
 export function startDocumentsWorker() {
