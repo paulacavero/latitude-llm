@@ -54,6 +54,9 @@ async function buildOutput(
 
   return messages.map((m) => {
     if (m.role === 'assistant') {
+      // FIXME: File content responses are wrong. Our types says the content is in
+      // m.content[0].file but Vercel SDK returns it in m.content[0].data
+      // We need to fix that in a future release
       return {
         role: 'assistant',
         content: m.content,

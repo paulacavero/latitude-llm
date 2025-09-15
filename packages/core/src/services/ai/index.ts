@@ -74,7 +74,6 @@ export type ToolSchema<
 export async function ai({
   context,
   provider,
-  prompt,
   messages: originalMessages,
   config: originalConfig,
   schema,
@@ -86,7 +85,6 @@ export async function ai({
   provider: ProviderApiKey
   config: VercelConfig
   messages: Message[]
-  prompt?: string
   schema?: JSONSchema7
   output?: ObjectOutput
   aiSdkProvider?: Partial<AISDKProvider>
@@ -155,7 +153,6 @@ export async function ai({
     const result = streamText({
       ...omit(config, ['schema']),
       model: languageModel,
-      prompt,
       messages: messages as ModelMessage[],
       tools: toolsResult.value,
       abortSignal,
