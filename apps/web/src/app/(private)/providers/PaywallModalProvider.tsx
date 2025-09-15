@@ -45,19 +45,22 @@ export function PaywallModalProvider({ children }: { children: ReactNode }) {
         onOpenChange={setIsOpen}
         dismissible
         title='Upgrade is required'
-        description="You've reached the limit included in your plan. Upgrade, wait for renewal or earn rewards to continue using Latte."
+        description="You've reached the credit limit included in your plan. Upgrade, wait for renewal or earn rewards to continue using Latte."
         footer={
           <>
             <CloseTrigger />
             <Link href='mailto:hello@latitude.so'>
-              <Button fancy iconProps={{ name: 'mail' }}>
+              <Button fancy iconProps={{ name: 'mail', placement: 'right' }}>
                 Get in touch to upgrade
               </Button>
             </Link>
           </>
         }
       >
-        <Alert description="Latitude will continue working, but you'll no longer be able to use Latte." />
+        <Alert
+          variant='warning'
+          description='Latitude will continue working, but you will not be able to use Latte.'
+        />
       </Modal>
     </PaywallModalContext.Provider>
   )

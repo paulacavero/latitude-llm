@@ -13,7 +13,8 @@ import {
 } from '$/hooks/usePlaygroundAction'
 import useCurrentWorkspace from '$/stores/currentWorkspace'
 import { useLatteStore } from '$/stores/latte'
-import { LATTE_NOT_ENOUGH_CREDITS_ERROR } from '@latitude-data/core/browser'
+import { LatitudeErrorCodes } from '@latitude-data/constants/errors'
+import type { ProviderLogDto } from '@latitude-data/core/browser'
 import { Alert } from '@latitude-data/web-ui/atoms/Alert'
 import { Button } from '@latitude-data/web-ui/atoms/Button'
 import { Text } from '@latitude-data/web-ui/atoms/Text'
@@ -30,8 +31,6 @@ import { LatteUsageInfo } from './_components/LatteUsageInfo'
 import { LatteMessageList } from './_components/MessageList'
 import { LatteUnconfiguredIntegrations } from './_components/UnconfiguredIntegrations'
 import { LatteChatInput } from './LatteChatInput'
-
-import type { ProviderLogDto } from '@latitude-data/core/browser'
 
 export function LatteChat({
   initialThreadUuid,
@@ -68,7 +67,7 @@ function LatteChatInputSection({
   sendMessage,
   stopLatteChat,
 }: {
-  error?: string
+  error?: Error
   inConversation: boolean
   resetChat: () => void
   scrollToBottom: () => void
@@ -198,9 +197,10 @@ function LatteChatUI() {
                       direction='column'
                       spacing='small'
                       title='Oh no, something went wrong'
-                      description={error}
+                      description={error.message}
                       cta={
-                        error.includes(LATTE_NOT_ENOUGH_CREDITS_ERROR) ? (
+                        error.name ===
+                        LatitudeErrorCodes.PaymentRequiredError ? (
                           <UpgradeLink
                             buttonProps={{
                               variant: 'ghost',
