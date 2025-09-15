@@ -1,10 +1,3 @@
-import {
-  EvaluationResultableType,
-  LatitudeTool,
-  LatitudeToolInternalName,
-  LogSources,
-  Quota,
-} from '@latitude-data/constants'
 import type {
   AssistantMessage,
   Message as CompilerMessage,
@@ -13,6 +6,7 @@ import type {
   UserMessage,
 } from '@latitude-data/constants/legacyCompiler'
 import {
+  Quota,
   EvaluationResultableType,
   LatitudeTool,
   LatitudeToolInternalName,

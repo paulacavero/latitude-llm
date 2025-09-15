@@ -8,7 +8,7 @@ import { JSONSchema7 } from 'json-schema'
 import { z } from 'zod'
 import {
   LegacyVercelSDKVersion4ToolContent,
-  LegacyVercelSDKVersion4Usage,
+  LegacyVercelSDKVersion4Usage as LanguageModelUsage,
   type ReplaceTextDelta,
 } from './ai/vercelSdkV5ToV4'
 import { ParameterType } from './config'
@@ -47,6 +47,11 @@ export type VercelConfig = {
   parameters?: Record<string, { type: ParameterType }>
   tools?: VercelTools
   azure?: AzureConfig
+  /**
+   * DEPRECATED: Legacy before SDK v5. Use `maxOutputTokens` instead.
+   */
+  maxTokens?: number
+  maxOutputTokens?: number
 }
 
 export type PartialPromptConfig = Omit<LatitudePromptConfig, 'provider'>
@@ -73,7 +78,7 @@ export type StreamType = 'object' | 'text'
 
 type BaseResponse = {
   text: string
-  usage: LegacyVercelSDKVersion4Usage
+  usage: LanguageModelUsage
   documentLogUuid?: string
   providerLog?: ProviderLog
   output?: (

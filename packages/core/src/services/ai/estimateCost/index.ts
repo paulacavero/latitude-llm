@@ -11,7 +11,7 @@ import { AMAZON_BEDROCK_MODELS } from './amazonBedrock'
 import { DEEPSEEK_MODELS } from './deepseek'
 import { PERPLEXITY_MODELS } from './perplexity'
 import { NON_IMPLEMENTED_COST } from './helpers'
-import { LegacyVercelSDKVersion4Usage } from '@latitude-data/constants'
+import { LegacyVercelSDKVersion4Usage as LanguageModelUsage } from '@latitude-data/constants'
 
 export type ModelCost = {
   input: number
@@ -115,7 +115,7 @@ export function estimateCost({
   provider,
   model,
 }: {
-  usage: LegacyVercelSDKVersion4Usage
+  usage: LanguageModelUsage
   provider: Providers
   model: string
 }): number {

@@ -1,6 +1,6 @@
 import { Conversation } from '@latitude-data/compiler'
 import {
-  LegacyVercelSDKVersion4Usage,
+  LegacyVercelSDKVersion4Usage as LanguageModelUsage,
   VercelConfig,
 } from '@latitude-data/constants'
 import { FinishReason } from 'ai'
@@ -42,7 +42,7 @@ export async function streamAIResponse({
   ...rest
 }: StreamProps): Promise<{
   response: ChainStepResponse<StreamType>
-  tokenUsage: LegacyVercelSDKVersion4Usage
+  tokenUsage: LanguageModelUsage
 }> {
   const optimizedAgentMessages = performAgentMessagesOptimization({
     messages: conversation.messages,
@@ -70,7 +70,7 @@ async function executeAIResponse({
   abortSignal,
 }: StreamProps): Promise<{
   response: ChainStepResponse<StreamType>
-  tokenUsage: LegacyVercelSDKVersion4Usage
+  tokenUsage: LanguageModelUsage
 }> {
   if (abortSignal?.aborted) {
     throw new Error('Operation aborted by client')
@@ -114,9 +114,13 @@ async function executeAIResponse({
     return {
       response,
       tokenUsage: {
+        inputTokens: 0,
+        outputTokens: 0,
         promptTokens: 0,
         completionTokens: 0,
         totalTokens: 0,
+        reasoningTokens: 0,
+        cachedInputTokens: 0,
       },
     }
   }

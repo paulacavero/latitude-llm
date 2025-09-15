@@ -56,9 +56,19 @@ export type LegacyVercelSDKVersion4Usage = {
   /**
    * The number of input (prompt) tokens used.
    */
+  inputTokens: number
+  /**
+   * The number of output (completion) tokens used.
+   */
+  outputTokens: number
+  /**
+   * The number of input (prompt) tokens used.
+   * DEPRECATED: use `inputTokens` instead.
+   */
   promptTokens: number
   /**
   The number of output (completion) tokens used.
+  DEPRECATED: use `outputTokens` instead.
      */
   completionTokens: number
   /**

@@ -156,6 +156,7 @@ export async function ai({
       messages: messages as ModelMessage[],
       tools: toolsResult.value,
       abortSignal,
+      maxOutputTokens: config.maxOutputTokens ?? config.maxTokens,
       providerOptions: config.providerOptions,
       experimental_telemetry: { isEnabled: false }, // Note: avoid conflicts with our own telemetry
       experimental_output: useSchema

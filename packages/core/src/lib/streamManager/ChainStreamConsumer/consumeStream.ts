@@ -39,7 +39,7 @@ export async function consumeStream({
     if (done) break
 
     const vercelChunk = value as VercelChunk
-    const chunk = value as ProviderData
+    let chunk = value as ProviderData
 
     if (vercelChunk.type === 'text-delta') {
       chunk = {
@@ -48,7 +48,8 @@ export async function consumeStream({
         textDelta: vercelChunk.text,
         providerMetadata: vercelChunk.providerMetadata,
       } as ProviderData
-      _accumulatedText.text += chunk.textDelta
+
+      _accumulatedText.text += vercelChunk.text
     } else if (vercelChunk.type === 'tool-call') {
       chunk = {
         type: 'tool-call',

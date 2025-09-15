@@ -27,6 +27,8 @@ const DEFAULT_USAGE: LanguageModelUsage = {
   inputTokens: 0,
   outputTokens: 0,
   totalTokens: 0,
+  reasoningTokens: 0,
+  cachedInputTokens: 0,
 }
 export const PARTIAL_FINISH_CHUNK = {
   totalUsage: DEFAULT_USAGE,
@@ -58,7 +60,7 @@ function buildFakeResult({
     usage: new Promise<LanguageModelUsage>(() => DEFAULT_USAGE),
     fullStream,
     providerName: Providers.OpenAI,
-    providerOptions: new Promise<undefined>(() => undefined),
+    providerMetadata: new Promise<undefined>(() => undefined),
     finishReason: new Promise<'stop' | 'error'>(() => 'stop'),
     response: new Promise(() => ({
       messages: [],
@@ -81,19 +83,18 @@ function buildFakeChain({
   })
   const result = {
     type: 'text' as const,
-    toolCalls: [] as any,
+    providerName: Providers.OpenAI,
     text: new Promise<string>(() => 'text'),
     reasoning: new Promise<string | undefined>((resolve) => resolve(undefined)),
     usage: new Promise<LanguageModelUsage>(() => DEFAULT_USAGE),
+    toolCalls: [],
     fullStream,
-    providerName: Providers.OpenAI,
     providerMetadata: new Promise<undefined>(() => undefined),
-  }
+  } as unknown as AIReturn<'text'>
   const accumulatedText = { text: '' }
   return new Promise<void>((resolve) => {
     new ReadableStream<LegacyChainEvent>({
       start(controller) {
-        // @ts-ignore - we mock result's props
         callback(controller, result, accumulatedText).then(() => {
           resolve()
         })
@@ -167,7 +168,7 @@ describe('consumeStream', () => {
           type: 'error',
           error: new Error('an error happened'),
         },
-        { type: 'text-delta', textDelta: 'b' },
+        { type: 'text-delta', id: '456', text: 'b' },
       ],
       callback: async (controller, result, accumulatedText) => {
         const data = await consumeStream({
@@ -207,6 +208,7 @@ describe('consumeStream', () => {
     await consumeStream({
       controller: fakeController,
       result: buildFakeResult({ fullStream: mockStream }),
+      accumulatedText: { text: '' },
     })
 
     expect(mockEnqueue).toHaveBeenCalledWith({

@@ -1,5 +1,6 @@
 import { omit } from 'lodash-es'
 import { StreamType } from '@latitude-data/constants'
+import { LegacyVercelSDKVersion4Usage } from '@latitude-data/constants'
 import { AIReturn } from '../services/ai'
 import { ToolContent } from 'ai'
 
@@ -11,12 +12,14 @@ export async function convertTokenUsage(
   const completionTokens = usage.outputTokens ?? 0
   const totalTokens = usage.totalTokens ?? promptTokens + completionTokens
   return {
+    inputTokens: promptTokens,
+    outputTokens: completionTokens,
     promptTokens,
     completionTokens,
     totalTokens,
     reasoningTokens: usage.reasoningTokens ?? 0,
     cachedInputTokens: usage.cachedInputTokens ?? 0,
-  }
+  } satisfies LegacyVercelSDKVersion4Usage
 }
 
 export async function convertToolCalls(

@@ -18,6 +18,8 @@ const EMPTY_USAGE = (): LanguageModelUsage => ({
   promptTokens: 0,
   completionTokens: 0,
   totalTokens: 0,
+  reasoningTokens: 0,
+  cachedInputTokens: 0,
 })
 
 type LanguageModelUsageDelta = Pick<
@@ -62,7 +64,9 @@ export function usePlaygroundChat({
   const [error, setError] = useState<Error | undefined>()
   const [isLoading, setIsLoading] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
-  const [unresponedToolCalls, setUnresponedToolCalls] = useState<ToolCall[]>([])
+  const [unrespondedToolCalls, setUnrespondedToolCalls] = useState<ToolCall[]>(
+    [],
+  )
   const [usage, setUsage] = useState<LanguageModelUsage>(EMPTY_USAGE())
   const [usageDelta, setUsageDelta] = useState<LanguageModelUsageDelta>(EMPTY_USAGE()) // prettier-ignore
   const usageDeltaRef = useRef<LanguageModelUsageDelta>(EMPTY_USAGE())
@@ -81,7 +85,13 @@ export function usePlaygroundChat({
         const promptTokens = Math.max(0, Math.ceil(prev.promptTokens + (incr.promptTokens ?? 0))) // prettier-ignore
         const completionTokens = Math.max(0, Math.ceil(prev.completionTokens + (incr.completionTokens ?? 0))) // prettier-ignore
         const totalTokens = promptTokens + completionTokens
-        return { promptTokens, completionTokens, totalTokens }
+        return {
+          promptTokens,
+          completionTokens,
+          totalTokens,
+          reasoningTokens: 0,
+          cachedInputTokens: 0,
+        }
       }),
     [setUsage],
   )

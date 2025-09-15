@@ -2,6 +2,7 @@ import {
   ChainStepResponse,
   StreamType,
   VercelConfig,
+  LegacyVercelSDKVersion4Usage,
 } from '@latitude-data/constants'
 import {
   Conversation,
@@ -61,7 +62,7 @@ export async function streamAIResponse({
 }): Promise<{
   response: ChainStepResponse<StreamType>
   messages: LegacyMessage[]
-  tokenUsage: Awaited<AIReturn<StreamType>['usage']>
+  tokenUsage: Awaited<LegacyVercelSDKVersion4Usage>
   finishReason: Awaited<AIReturn<StreamType>['finishReason']>
 }> {
   const startTime = Date.now()
@@ -136,8 +137,7 @@ export async function streamAIResponse({
   return {
     response,
     messages: responseMessages,
-    tokenUsage: await aiResult.usage,
     tokenUsage: processedResponse.usage,
-    finishReason: aiResult.finishReason,
+    finishReason: await aiResult.finishReason,
   }
 }
